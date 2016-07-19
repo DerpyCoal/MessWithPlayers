@@ -26,7 +26,7 @@ end )
 
 concommand.Add("burnplayer", function setpass( args )
 	if args[2] == password then
-		if args[1]:IsPlayer() == 1 then
+		if (args[1]:IsPlayer()) then
 			args[1]:Ignite( 30 )
 		else
 			print("Argument 1 is not a valid player.")
@@ -38,7 +38,7 @@ end )
 
 concommand.Add("launchplayer", function setpass( args ) 
 	if args[2] == password then
-		if args[1]:IsPlayer() == 1 then
+		if (args[1]:IsPlayer()) then
 			args[1]:SetVelocity( args[1]:GetVelocity() + Vector( 0, 0, 300 ) )
 		else
 			print("Argument 1 is not a valid player.")
@@ -50,7 +50,7 @@ end )
 
 concommand.Add("explodeplayer", function setpass( args ) 
 	if args[2] == password then
-		if args[1]:IsPlayer() == 1 then
+		if (args[1]:IsPlayer()) then
 			local explosiontoplayer = ents.Create("env_explosion")
 			if not ( IsValid( explosiontoplayer ) ) then return end
 			explosiontoplayer:SetPos( args[1]:GetPos() )
@@ -67,10 +67,14 @@ end )
 
 concommand.Add("swap_places", function setpass( args ) 
 	if args[3] == password then
+                if (args[2]:IsPlayer()) then
+                if (args[1]:IsPlayer()) then
 		pposition1 = args[1]:GetPos()
 		pposition2 = args[2]:GetPos()
 		args[1]:SetPos(pposition2)
 		args[2]:SetPos(pposition1)
+                else print ("Player 1 invalid.") end
+                else print ("Player 2 invalid.") end
 	else
 		print( "Invalid Password." )
 	end
@@ -78,7 +82,7 @@ end )
 
 concommand.Add("spinplayer", function setpass( args ) 
 	if args[2] == password then
-		if args[1]:IsPlayer() == 1 then
+		if (args[1]:IsPlayer()) then
 			args[1]:SetVelocity( args[1]:GetVelocity() + Vector( 0, 300, 2 ) )
 		else
 			print("Argument 1 is not a valid player.")
@@ -90,7 +94,7 @@ end )
 
 concommand.Add("freeze", function setpass( args ) 
 	if args[2] == password then
-		if args[1]:IsPlayer() == 1 then
+		if (args[1]:IsPlayer()) then
 			freezeamount = freezeamount + 1
 			freezeindex = table.insert(freezelist, args[1])
 			print("Use the command unfreeze " .. freezeindex .. " <password> to unfreeze the current player.")
