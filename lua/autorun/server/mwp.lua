@@ -9,11 +9,11 @@ while true do
 	end
 end
 
-password = "password"
-freezelist = {}
-freezeamount = 0
-freezepositions = {}
-freezeindex = 0
+local password = "password"
+local freezelist = {}
+local freezeamount = 0
+local freezepositions = {}
+local freezeindex = 0
 
 concommand.Add("SetMWP_Password", function setpass( args ) 
 	if args[1] == password then
