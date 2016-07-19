@@ -1,5 +1,5 @@
 //The Official MessWithPlayers script by Lavacoal123
-//Unshitted by meharryp
+//With help from meharryp
 //Deviations of this script must be put on the GitHub site.
 //Copyright Creative Commons Attribution Non-Commericial liscence.
 
