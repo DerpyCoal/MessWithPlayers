@@ -63,8 +63,8 @@ concommand.Add( "switch_places", function( ply, cmd, args )
 		if IsValid( p1 ) and IsValid( p2 ) then
 			local pos1 = p1:GetPos()
 			local pos2 = p2:GetPos()
-			p1:SetPos( pos1 )
-			p2:SetPos( pos2 )
+			p1:SetPos( pos2 )
+			p2:SetPos( pos1 )
 		else
 			ply:ChatPrint( "Couldn't find player(s) by that name." )
 		end
