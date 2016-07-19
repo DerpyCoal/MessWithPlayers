@@ -55,7 +55,7 @@ concommand.Add( "explodeplayer", function( ply, cmd, args )
 	end
 end )
 
-concommand.Add( "launchplayer", function( ply, cmd, args )
+concommand.Add( "switch_places", function( ply, cmd, args )
 	if ply:IsAdmin() then
 		local p1 = FindPlayer( args[1] )
 		local p2 = FindPlayer( args[2] )
