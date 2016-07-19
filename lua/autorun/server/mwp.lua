@@ -2,18 +2,7 @@
 //Deviations of this script must be put on the GitHub site.
 //Copyright Creative Commons Attribution Non-Commericial liscence.
 
-while true do
-	for freezevar = 0, freezeamount //Repeats for as many people are frozen and adds 1 to variable freezevar every loop
-		freezepositions[freezevar] = freezelist[freezevar]:GetPos() //Gets position of a player on the freezelist, and assigns it to the table with the number "freezevar"
-		freezelist[freezevar]:SetPos( freezepositions[freezevar] )  //Sets position of player with freezevar value of the current loop to the position designated in the table.
-	end
-end
-
 local password = "password"
-local freezelist = {}
-local freezeamount = 0
-local freezepositions = {}
-local freezeindex = 0
 
 concommand.Add("SetMWP_Password", function setpass( args ) 
 	if args[1] == password then
@@ -86,31 +75,6 @@ concommand.Add("spinplayer", function setpass( args )
 			args[1]:SetVelocity( args[1]:GetVelocity() + Vector( 0, 300, 2 ) )
 		else
 			print("Argument 1 is not a valid player.")
-		end
-	else
-		print( "Invalid Password." )
-	end
-end )
-
-concommand.Add("freeze", function setpass( args ) 
-	if args[2] == password then
-		if (args[1]:IsPlayer()) then
-			freezeamount = freezeamount + 1
-			freezeindex = table.insert(freezelist, args[1])
-			print("Use the command unfreeze " .. freezeindex .. " <password> to unfreeze the current player.")
-		else
-			print("Argument 1 is not a valid player.")
-		end
-	else
-		print( "Invalid Password." )
-	end
-end )
-
-concommand.Add("unfreeze", function setpass( args ) 
-	if args[2] == password then
-		validilitycheckvar = args[1]
-		if IsValid(freezelist[validilitycheckvar]) then
-			table.remove(freezelist, args[1])
 		end
 	else
 		print( "Invalid Password." )
