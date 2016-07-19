@@ -1,82 +1,101 @@
 //The Official MessWithPlayers script by Lavacoal123
+//Unshitted by meharryp
 //Deviations of this script must be put on the GitHub site.
 //Copyright Creative Commons Attribution Non-Commericial liscence.
 
-local password = "password"
-
-concommand.Add("SetMWP_Password", function setpass( args ) 
-	if args[1] == password then
-		password = args[2]
-		print( "Succesfully changed password to" .. password )
-	else
-		print( "Invalid Password." )
+local function FindPlayer( ply )
+	for k,v in pairs( player.GetAll() ) do
+		if string.find( v:Name():lower(), ply:lower() ) then
+			return v
+		end
 	end
-end )
+end
 
-concommand.Add("burnplayer", function setpass( args )
-	if args[2] == password then
-		if (args[1]:IsPlayer()) then
-			args[1]:Ignite( 30 )
+concommand.Add( "burnplayer", function( ply, cmd, args )
+	if ply:IsAdmin() then
+		local target = FindPlayer( args[1] )
+		if IsValid( target ) then
+			target:Ignite( 30 )
 		else
-			print("Argument 1 is not a valid player.")
+			ply:ChatPrint( "Couldn't find a player by that name." )
 		end
 	else
-		print( "Invalid Password." )
+		ply:ChatPrint( "You must be an admin to do that!" )
 	end
 end )
 
-concommand.Add("launchplayer", function setpass( args ) 
-	if args[2] == password then
-		if (args[1]:IsPlayer()) then
-			args[1]:SetVelocity( args[1]:GetVelocity() + Vector( 0, 0, 300 ) )
+concommand.Add( "launchplayer", function( ply, cmd, args )
+	if ply:IsAdmin() then
+		local target = FindPlayer( args[1] )
+		if IsValid( target ) then
+			target:SetVelocity( target:GetVelocity() + Vector( 0, 0, 300 ) )
 		else
-			print("Argument 1 is not a valid player.")
+			ply:ChatPrint( "Couldn't find a player by that name." )
 		end
 	else
-		print( "Invalid Password." )
+		ply:ChatPrint( "You must be an admin to do that!" )
 	end
 end )
 
-concommand.Add("explodeplayer", function setpass( args ) 
-	if args[2] == password then
-		if (args[1]:IsPlayer()) then
+concommand.Add( "explodeplayer", function( ply, cmd, args )
+	if ply:IsAdmin() then
+		local target = FindPlayer( args[1] )
+		if IsValid( target ) then
 			local explosiontoplayer = ents.Create("env_explosion")
 			if not ( IsValid( explosiontoplayer ) ) then return end
-			explosiontoplayer:SetPos( args[1]:GetPos() )
-			explosiontoplayer:SetKeyValue("Magnitude", "300")
+			explosiontoplayer:SetPos( target:GetPos() )
+			explosiontoplayer:SetKeyValue( "Magnitude", "300" )
 			explosiontoplayer:Spawn()
-			
+			explosiontoplayer:Fire( "explode" )
 		else
-			print("Argument 1 is not a valid player.")
+			ply:ChatPrint( "Couldn't find a player by that name." )
 		end
 	else
-		print( "Invalid Password." )
+		ply:ChatPrint( "You must be an admin to do that!" )
 	end
 end )
 
-concommand.Add("swap_places", function setpass( args ) 
-	if args[3] == password then
-                if (args[2]:IsPlayer()) then
-                if (args[1]:IsPlayer()) then
-		pposition1 = args[1]:GetPos()
-		pposition2 = args[2]:GetPos()
-		args[1]:SetPos(pposition2)
-		args[2]:SetPos(pposition1)
-                else print ("Player 1 invalid.") end
-                else print ("Player 2 invalid.") end
+concommand.Add( "launchplayer", function( ply, cmd, args )
+	if ply:IsAdmin() then
+		local p1 = FindPlayer( args[1] )
+		local p2 = FindPlayer( args[2] )
+
+		if IsValid( p1 ) and IsValid( p2 ) then
+			local pos1 = p1:GetPos()
+			local pos2 = p2:GetPos()
+			p1:SetPos( pos1 )
+			p2:SetPos( pos2 )
+		else
+			ply:ChatPrint( "Couldn't find player(s) by that name." )
+		end
 	else
-		print( "Invalid Password." )
+		ply:ChatPrint( "You must be an admin to do that!" )
 	end
 end )
 
-concommand.Add("spinplayer", function setpass( args ) 
-	if args[2] == password then
-		if (args[1]:IsPlayer()) then
-			args[1]:SetVelocity( args[1]:GetVelocity() + Vector( 0, 300, 2 ) )
+// This is litterly the launchplayer command but on the Y-axis
+concommand.Add( "spinplayer", function( ply, cmd, args )
+	if ply:IsAdmin() then
+		local target = FindPlayer( args[1] )
+		if IsValid( target ) then
+			target:SetVelocity( target:GetVelocity() + Vector( 0, 300, 2 ) )
 		else
-			print("Argument 1 is not a valid player.")
+			ply:ChatPrint( "Couldn't find a player by that name." )
 		end
 	else
-		print( "Invalid Password." )
+		ply:ChatPrint( "You must be an admin to do that!" )
+	end
+end )
+
+concommand.Add( "freezeplayer", function( ply, cmd, args )
+	if ply:IsAdmin() then
+		local target = FindPlayer( args[1] )
+		if IsValid( target ) then
+			target:Freeze( not target:IsFrozen() )
+		else
+			ply:ChatPrint( "Couldn't find a player by that name." )
+		end
+	else
+		ply:ChatPrint( "You must be an admin to do that!" )
 	end
 end )
