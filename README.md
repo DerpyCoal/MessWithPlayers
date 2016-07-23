@@ -1,2 +1,6 @@
 # MessWithPlayers
-MessWithPlayers is a GMOD addon that lets server jerks Mess With Players by using a palooza of great commands!
+MessWithPlayers is a Garry's Mod addon, which allows server jeks to... MessWithPlayers, using a plethora of amazing commands.
+
+# Features
+- Simple Command System
+- Admin Permissions
