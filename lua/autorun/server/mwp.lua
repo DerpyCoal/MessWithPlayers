@@ -42,7 +42,6 @@ local function AddCommand(name, data)
 	data.internalAccess = nil
 	data.rankFunc = nil
 	
-	if data.rank and not data.accessFunc then
 	-- This bit of code creates the internal accessor function.
 	-- It creates a function for checking the rank string, by using IsAdmin, IsSuperAdmin and IsUserGroup.
 	if data.rank then
@@ -65,8 +64,6 @@ local function AddCommand(name, data)
 		-- And the opposite is true here, if we only have the accessor func, we use that.
 		data.internalAccess = data.accessFunc
 	elseif data.rank and data.accessFunc then
-		data.internalAccess = function(ply) if not data.accessFunc(ply) == nil then return data.accessFunc(ply) else return data.rankFunc(ply) end end
-		data.internalAccess = function(ply) 
 		-- If we have both? Start by checking the accessorFunc, and if it returns nothing, check the rank function.
 		data.internalAccess = function(ply)
 			-- I can't just run a "if not data.accessFunc(ply)", as false and nil both return false on that, and false is valid, whilst nil isn't.
