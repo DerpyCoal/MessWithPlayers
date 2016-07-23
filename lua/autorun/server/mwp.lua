@@ -1,131 +1,63 @@
-//The Official MessWithPlayers script by Lavacoal123
-//With help from meharryp
+//The Official MessWithPlayers script by Lavacoal123 and code_gs
 //Deviations of this script must be put on the GitHub site.
 //Copyright Creative Commons Attribution Non-Commericial liscence.
 
-local function FindPlayer( ply )
-	for k,v in pairs( player.GetAll() ) do
-		if string.find( v:Name():lower(), ply:lower() ) then
-			return v
+local RankCallback = debug.getregistry().Player.IsAdmin
+local ConFunctions = {
+	["burnplayer"] = function( ply )
+		ply:Ignite( 30 )
+	end,
+	["launchplayer"] = function( ply )
+		ply:SetVelocity( ply:GetVelocity() + Vector( 0, 0, 300 ) )
+	end,
+	["explodeplayer"] = function( ply )
+		local explosiontoplayer = ents.Create( "env_explosion" )
+		explosiontoplayer:SetPos( ply:GetPos() )
+		explosiontoplayer:SetKeyValue( "Magnitude", "300" )
+		explosiontoplayer:Spawn()
+	end,
+	["swap_places"] = function( targply, runply )
+		local temppos = runply:GetPos()
+		runply:SetPos( targply:GetPos() )
+		targply:SetPos( temppos )
+	end,
+	["spinplayer"] = function( ply )
+		ply:SetVelocity( ply:GetVelocity() + Vector( 0, 300, 2 ) )
+	end
+}
+
+local function GetPlayerByName( name )
+	name = name:lower()
+	local players = player.GetAll()
+	local retply
+	
+	for i = 1, #players do
+		local player = players[i]
+		
+		if ( player:Nick():lower() == name ) then
+			if ( retply ) then
+				return false
+			else
+				retply = player
+			end
 		end
 	end
+	
+	return retply
 end
 
-local function printNoFindPlayer( playernofind, ply )
-	ply:ChatPrint("Player " .. playernofind .. " Not found.")
+for command, func in pairs( ConFunctions ) do
+	concommand.Add( command, function( ply, _, args )
+		if ( RankCallback( ply )) then
+			local targplayer = GetPlayerByName( args[1] )
+			
+			if ( targplayer == nil ) then
+				ply:ChatPrint( "[MWP] Player not found!" )
+			elseif ( targplayer == false ) then
+				ply:ChatPrint( "[MWP] Name matched multiple people; try again!" )
+			else
+				func( targplayer, ply )
+			end
+		end
+	end )
 end
-
-concommand.Add( "burnplayer", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			target:Ignite( 30 )
-		else
-			printNoFindPlayer( target, ply )
-		end
-	else
-		ply:ChatPrint( "You must be an admin to do that!" )
-	end
-end )
-
-concommand.Add( "launchplayer", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			target:SetVelocity( target:GetVelocity() + Vector( 0, 0, 300 ) )
-		else
-			printNoFindPlayer( target, ply )
-		end
-	else
-		ply:ChatPrint( "You must be an admin to do that!" )
-	end
-end )
-
-concommand.Add( "explodeplayer", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			local explosiontoplayer = ents.Create("env_explosion")
-			if not ( IsValid( explosiontoplayer ) ) then return end
-			explosiontoplayer:SetPos( target:GetPos() )
-			explosiontoplayer:SetKeyValue( "Magnitude", "300" )
-			explosiontoplayer:Spawn()
-			explosiontoplayer:Fire( "explode" )
-		else
-			printNoFindPlayer( target, ply )
-		end
-	else
-		ply:ChatPrint( "You must be an admin to do that!" )
-	end
-end )
-
-concommand.Add( "switch_places", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local p1 = FindPlayer( args[1] )
-		local p2 = FindPlayer( args[2] )
-
-		if IsValid( p1 ) and IsValid( p2 ) then
-			local pos1 = p1:GetPos()
-			local pos2 = p2:GetPos()
-			p1:SetPos( pos2 )
-			p2:SetPos( pos1 )
-		else
-			ply:ChatPrint("Couldn't find those players.")
-		end
-	else
-		ply:ChatPrint( "You must be an admin to do that!" )
-	end
-end )
-
-// This is litterly the launchplayer command but on the Y-axis
-concommand.Add( "spinplayer", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			target:SetVelocity( target:GetVelocity() + Vector( 0, 300, 2 ) )
-		else
-			printNoFindPlayer( target, ply )
-		end
-	else
-		ply:ChatPrint( "You must be an admin to do that!" )
-	end
-end )
-
-concommand.Add( "freezeplayer", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			target:Freeze( not target:IsFrozen() )
-		else
-			printNoFindPlayer( target, ply )
-		end
-	else
-		ply:ChatPrint( "You must be an admin to do that!" )
-	end
-end )
-
-concommand.Add( "floop_player", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			target:SetVelocity( target:GetVelocity() + Vector( 300, 300, 300 ) )
-		else
-			printNoFindPlayer( target, ply )
-		end
-	else
-		ply:ChatPrint( "You must be an admin to do that!" )
-	end
-end )
-
-concommand.Add( "ball_player", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			target:SetAllowFullRotation( not target:GetAllowFullRotation() )
-		else
-			printNoFindPlayer( target, ply )
-		end
-	else
-		ply:ChatPrint( "You must be an admin to do that!" )
-	end
-end )
