@@ -1,7 +1,9 @@
-//The Official MessWithPlayers script by Lavacoal123
-//With help from meharryp
-//Deviations of this script must be put on the GitHub site.
-//Copyright Creative Commons Attribution Non-Commericial liscence.
+--[[
+The Official MessWithPlayers script by Lavacoal123
+With help from meharryp and John Internet.
+Deviations of this script must be posted on GitHub (http://www.github.com)
+Copyright - Creative Commons Attribution Non-Commercial License
+ ]]--
 
 local function FindPlayer( ply )
 	for k,v in pairs( player.GetAll() ) do
@@ -73,7 +75,7 @@ concommand.Add( "switch_places", function( ply, cmd, args )
 	end
 end )
 
-// This is litterly the launchplayer command but on the Y-axis
+-- This is litterly the launchplayer command but on the Y-axis
 concommand.Add( "spinplayer", function( ply, cmd, args )
 	if ply:IsAdmin() then
 		local target = FindPlayer( args[1] )
