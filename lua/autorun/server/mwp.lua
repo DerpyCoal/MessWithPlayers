@@ -198,3 +198,7 @@ concommand.Add( "freezeplayer", function( ply, cmd, args )
 		ply:ChatPrint( "You must be an admin to do that!" )
 	end
 end )
+
+for k, v in pairs(commands) do
+	AddCommand(k, v)
+end
