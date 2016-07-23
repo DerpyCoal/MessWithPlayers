@@ -74,6 +74,11 @@ local commands = {}
 
 commands.burnplayer = {}
 commands.burnplayer.callback = function(ply, cmd, args)
+	if not args[1] then
+		ply:ChatPrint("This command requires at least one argument")
+		return
+	end
+	
 	local target = FindPlayer(args[1])
 	if IsValid(target) then
 		target:Ignite(30)
@@ -84,6 +89,11 @@ end
 
 commands.launchplayer = {}
 commands.launchplayer.callback = function(ply, cmd, args)
+	if not args[1] then
+		ply:ChatPrint("This command requires at least one argument")
+		return
+	end
+	
 	local target = FindPlayer( args[1] )
 	if IsValid( target ) then
 		target:SetVelocity( target:GetVelocity() + Vector( 0, 0, 300 ) )
@@ -95,6 +105,11 @@ commands.launchplayer.rank = "admin"
 
 commands.explodeplayer = {}
 commands.explodeplayer.callback = function(ply, cmd, args)
+	if not args[1] then
+		ply:ChatPrint("This command requires at least one argument")
+		return
+	end
+	
 	local target = FindPlayer( args[1] )
 	if IsValid( target ) then
 		local explosiontoplayer = ents.Create("env_explosion")
