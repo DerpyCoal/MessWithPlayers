@@ -33,7 +33,7 @@ local function AddCommand( name, data )
 	-- So in this case, if not name then error("Name not passed...") end
 	assert(name, "Name not passed to AddCommand")
 	assert(data, "Data not passed to AddCommand")
-	if not data:istable() then error("Data is not a table.") end
+	if not istable(data) then error("Data is not a table.") end
 	
 	data.internalAccess = nil
 	
