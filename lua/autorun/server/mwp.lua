@@ -34,9 +34,12 @@ local function AddCommand( name, data )
 	-- So in this case, if not name then error("Name not passed...") end
 	assert(name, "Name not passed to AddCommand")
 	assert(data, "Data not passed to AddCommand")
+	-- This checks that not only data is provided, but that data is a table.
 	if not istable(data) then error("Data is not a table.") end
 	
+	-- Setting stuff for later for later.
 	data.internalAccess = nil
+	data.rankFunc = nil
 	
 	if data.rank and not data.accessFunc then
 		if data.rank == "user" then
