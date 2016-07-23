@@ -101,7 +101,6 @@ commands.launchplayer.callback = function(ply, cmd, args)
 		ply:ChatPrint( "Couldn't find a player by that name." )
 	end
 end
-commands.launchplayer.rank = "admin"
 
 commands.explodeplayer = {}
 commands.explodeplayer.callback = function(ply, cmd, args)
@@ -122,97 +121,65 @@ commands.explodeplayer.callback = function(ply, cmd, args)
 		ply:ChatPrint( "Couldn't find a player by that name." )
 	end
 end
-commands.explodeplayer.accessFunc = function(ply) return ply:IsAdmin() end
 	
---[[
--- concommand.Add( "burnplayer", function( ply, cmd, args )
-	-- if ply:IsAdmin() then
-		-- local target = FindPlayer( args[1] )
-		-- if IsValid( target ) then
-			-- target:Ignite( 30 )
-		-- else
-			-- ply:ChatPrint( "Couldn't find a player by that name." )
-		-- end
-	-- else
-		-- ply:ChatPrint( "You must be an admin to do that!" )
-	-- end
--- end )
-]]--
---[[concommand.Add( "launchplayer", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			target:SetVelocity( target:GetVelocity() + Vector( 0, 0, 300 ) )
-		else
-			ply:ChatPrint( "Couldn't find a player by that name." )
-		end
-	else
-		ply:ChatPrint( "You must be an admin to do that!" )
+commands.switch_places = {}
+commands.switch_places.callback = function(ply, cmd, args)
+	if not args[1] then
+		ply:ChatPrint("This command requires at least one argument")
+		return
 	end
-end )]]
---[[
-concommand.Add( "explodeplayer", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			local explosiontoplayer = ents.Create("env_explosion")
-			if not ( IsValid( explosiontoplayer ) ) then return end
-			explosiontoplayer:SetPos( target:GetPos() )
-			explosiontoplayer:SetKeyValue( "Magnitude", "300" )
-			explosiontoplayer:Spawn()
-			explosiontoplayer:Fire( "explode" )
-		else
-			ply:ChatPrint( "Couldn't find a player by that name." )
-		end
+	local ply1 = FindPlayer(args[1])
+	
+	if args[2] then
+		ply2 = FindPlayer(args[2])
 	else
-		ply:ChatPrint( "You must be an admin to do that!" )
+		ply2 = ply
 	end
-end )]]
+	
+	if IsValid(ply1) and IsValid(ply2) then
+		if ply1 == ply2 then
+			ply:ChatPrint("You cannot select the same player to swap with.")
+			return
+		end
 
-concommand.Add( "switch_places", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local p1 = FindPlayer( args[1] )
-		local p2 = FindPlayer( args[2] )
-
-		if IsValid( p1 ) and IsValid( p2 ) then
-			local pos1 = p1:GetPos()
-			local pos2 = p2:GetPos()
-			p1:SetPos( pos2 )
-			p2:SetPos( pos1 )
-		else
-			ply:ChatPrint( "Couldn't find player(s) by that name." )
-		end
+		local pos1, pos2 = ply1:GetPos(), ply2:GetPos()
+		ply1:SetPos(pos2)
+		ply2:SetPos(pos1)
 	else
-		ply:ChatPrint( "You must be an admin to do that!" )
+		ply:ChatPrint("Couldn't find a player with that name.")
 	end
-end )
+end
 
--- This is litterly the launchplayer command but on the Y-axis
-concommand.Add( "spinplayer", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			target:SetVelocity( target:GetVelocity() + Vector( 0, 300, 2 ) )
-		else
-			ply:ChatPrint( "Couldn't find a player by that name." )
-		end
-	else
-		ply:ChatPrint( "You must be an admin to do that!" )
+commands.spinplayer = {}
+commands.spinplayer.callback = function(ply, cmd, args)
+	if not args[1] then
+		ply:ChatPrint("This command requires at least one argument")
+		return
 	end
-end )
+	
+	local target = FindPlayer(args[1])
+	if IsValid( target ) then
+		target:SetVelocity( target:GetVelocity() + Vector( 0, 300, 2 ) )
+	else
+		ply:ChatPrint( "Couldn't find a player with that name." )
+	end
+end
 
-concommand.Add( "freezeplayer", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			target:Freeze( not target:IsFrozen() )
-		else
-			ply:ChatPrint( "Couldn't find a player by that name." )
-		end
-	else
-		ply:ChatPrint( "You must be an admin to do that!" )
+commands.freezeplayer = {}
+commands.freezeplayer.callback = function(ply, cmd, args)
+	if not args[1] then
+		ply:ChatPrint("This command requires at least one argument")
+		return
 	end
-end )
+	
+	local target = FindPlayer( args[1] )
+	if IsValid( target ) then
+		target:Freeze( not target:IsFrozen() )
+	else
+		ply:ChatPrint( "Couldn't find a player by that name." )
+	end
+end
+
 
 for k, v in pairs(commands) do
 	AddCommand(k, v)
