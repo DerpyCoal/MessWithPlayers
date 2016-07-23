@@ -62,7 +62,7 @@ local function AddCommand( name, data )
 	concommand.Add(name, function(ply, cmd, args)
 		if ply:IsValid() then
 			if data.internalAccess(ply) then
-				callback(ply, cmd, args)
+				data.callback(ply, cmd, args)
 			else
 				ply:ChatPrint(data.failMsg)
 			end
