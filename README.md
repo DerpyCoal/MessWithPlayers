@@ -4,3 +4,4 @@ MessWithPlayers is a Garry's Mod addon, which allows server jeks to... MessWithP
 ## Features
 - Simple Command System
 - Admin Permissions
+- Modular Design
