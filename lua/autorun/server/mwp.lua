@@ -58,6 +58,13 @@ local function AddCommand(name, data)
 		data.internalAccess = data.accessFunc
 	elseif data.rank and data.accessFunc then
 		data.internalAccess = function(ply) if not data.accessFunc(ply) == nil then return data.accessFunc(ply) else return data.rankFunc(ply) end end
+		data.internalAccess = function(ply) 
+			if data.accessFunc(ply) == nil then
+				return data.rankFunc(ply)
+			else
+				return data.accessFunc(ply)
+			end
+		end
 	else
 		data.internalAccess = function(ply) return ply:IsAdmin() end
 	end
