@@ -12,7 +12,7 @@ callback: function(ply, cmd, args) - The function that is run if the user passes
 optional
 rank: string for the rank. (user (true), admin (IsAdmin), superadmin (IsSuperAdmin) or other (IsUserGroup) - If blank then assumes admin, unless accessFunc is filled.
 accessFunc: function(ply) a function that is called to check if a user has access to a command. return true to allow access, false to deny, blank to try rank, if data.rank is not null.
-
+failMsg: string to explain why a check failed. Defaults to "You do not have the correct rank for this command."
 ]]--
 
 -- This function takes a player's name as an input, returning the player data if found.
@@ -57,31 +57,73 @@ local function AddCommand( name, data )
 		data.internalAccess = function(ply) return ply:IsAdmin() end
 	end
 	
+	if not data.failMsg then data.failMsg = "You do not have the correct rank for this command." end
+	
 	concommand.Add(name, function(ply, cmd, args)
 		if ply:IsValid() then
 			if data.internalAccess(ply) then
 				callback(ply, cmd, args)
+			else
+				ply:ChatPrint(data.failMsg)
 			end
 		end
 	end)
 end
-	
-	
 
-concommand.Add( "burnplayer", function( ply, cmd, args )
-	if ply:IsAdmin() then
-		local target = FindPlayer( args[1] )
-		if IsValid( target ) then
-			target:Ignite( 30 )
-		else
-			ply:ChatPrint( "Couldn't find a player by that name." )
-		end
+local commands = {}
+
+commands.burnplayer = {}
+commands.burnplayer.callback = function(ply, cmd, args)
+	local target = FindPlayer(args[1])
+	if IsValid(target) then
+		target:Ignite(30)
 	else
-		ply:ChatPrint( "You must be an admin to do that!" )
+		ply:ChatPrint("Couldn't find a player with that name.")
 	end
-end )
+end
 
-concommand.Add( "launchplayer", function( ply, cmd, args )
+commands.launchplayer = {}
+commands.launchplayer.callback = function(ply, cmd, args)
+	local target = FindPlayer( args[1] )
+	if IsValid( target ) then
+		target:SetVelocity( target:GetVelocity() + Vector( 0, 0, 300 ) )
+	else
+		ply:ChatPrint( "Couldn't find a player by that name." )
+	end
+end
+commands.launchplayer.rank = "admin"
+
+commands.explodeplayer = {}
+commands.explodeplayer.callback = function(ply, cmd, args)
+	local target = FindPlayer( args[1] )
+	if IsValid( target ) then
+		local explosiontoplayer = ents.Create("env_explosion")
+		if not ( IsValid( explosiontoplayer ) ) then return end
+		explosiontoplayer:SetPos( target:GetPos() )
+		explosiontoplayer:SetKeyValue( "Magnitude", "300" )
+		explosiontoplayer:Spawn()
+		explosiontoplayer:Fire( "explode" )
+	else
+		ply:ChatPrint( "Couldn't find a player by that name." )
+	end
+end
+commands.explodeplayer.accessFunc = function(ply) return ply:IsAdmin() end
+	
+--[[
+-- concommand.Add( "burnplayer", function( ply, cmd, args )
+	-- if ply:IsAdmin() then
+		-- local target = FindPlayer( args[1] )
+		-- if IsValid( target ) then
+			-- target:Ignite( 30 )
+		-- else
+			-- ply:ChatPrint( "Couldn't find a player by that name." )
+		-- end
+	-- else
+		-- ply:ChatPrint( "You must be an admin to do that!" )
+	-- end
+-- end )
+]]--
+--[[concommand.Add( "launchplayer", function( ply, cmd, args )
 	if ply:IsAdmin() then
 		local target = FindPlayer( args[1] )
 		if IsValid( target ) then
@@ -92,8 +134,8 @@ concommand.Add( "launchplayer", function( ply, cmd, args )
 	else
 		ply:ChatPrint( "You must be an admin to do that!" )
 	end
-end )
-
+end )]]
+--[[
 concommand.Add( "explodeplayer", function( ply, cmd, args )
 	if ply:IsAdmin() then
 		local target = FindPlayer( args[1] )
@@ -110,7 +152,7 @@ concommand.Add( "explodeplayer", function( ply, cmd, args )
 	else
 		ply:ChatPrint( "You must be an admin to do that!" )
 	end
-end )
+end )]]
 
 concommand.Add( "switch_places", function( ply, cmd, args )
 	if ply:IsAdmin() then
