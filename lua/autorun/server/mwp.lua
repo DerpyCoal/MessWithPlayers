@@ -74,7 +74,7 @@ local function AddCommand(name, data)
 	concommand.Add(name, function(ply, cmd, args)
 		if ply:IsValid() then
 			if (data.minArgs and not args[data.minArgs]) then
-				ply:ChatPrint(string.format("This command requires %d arguments.", data.minArgs))
+				ply:ChatPrint(string.format("This command requires %d %s.", data.minArgs, data.minArgs == 1 and "argument" or "arguments"))
 			else
 				if data.internalAccess(ply) then
 					data.callback(ply, cmd, args)
