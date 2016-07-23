@@ -21,7 +21,7 @@ concommand.Add( "burnplayer", function( ply, cmd, args )
 		if IsValid( target ) then
 			target:Ignite( 30 )
 		else
-			printNoFindPlayer( target, ply )
+			printNoFindPlayer( target, args[1] )
 		end
 	else
 		ply:ChatPrint( "You must be an admin to do that!" )
@@ -34,7 +34,7 @@ concommand.Add( "launchplayer", function( ply, cmd, args )
 		if IsValid( target ) then
 			target:SetVelocity( target:GetVelocity() + Vector( 0, 0, 300 ) )
 		else
-			printNoFindPlayer( target, ply )
+			printNoFindPlayer( target, args[1] )
 		end
 	else
 		ply:ChatPrint( "You must be an admin to do that!" )
@@ -52,7 +52,7 @@ concommand.Add( "explodeplayer", function( ply, cmd, args )
 			explosiontoplayer:Spawn()
 			explosiontoplayer:Fire( "explode" )
 		else
-			printNoFindPlayer( target, ply )
+			printNoFindPlayer( target, args[1] )
 		end
 	else
 		ply:ChatPrint( "You must be an admin to do that!" )
@@ -84,7 +84,7 @@ concommand.Add( "spinplayer", function( ply, cmd, args )
 		if IsValid( target ) then
 			target:SetVelocity( target:GetVelocity() + Vector( 0, 300, 2 ) )
 		else
-			printNoFindPlayer( target, ply )
+			printNoFindPlayer( target, args[1] )
 		end
 	else
 		ply:ChatPrint( "You must be an admin to do that!" )
@@ -97,7 +97,7 @@ concommand.Add( "freezeplayer", function( ply, cmd, args )
 		if IsValid( target ) then
 			target:Freeze( not target:IsFrozen() )
 		else
-			printNoFindPlayer( target, ply )
+			printNoFindPlayer( target, args[1] )
 		end
 	else
 		ply:ChatPrint( "You must be an admin to do that!" )
@@ -110,7 +110,7 @@ concommand.Add( "floop_player", function( ply, cmd, args )
 		if IsValid( target ) then
 			target:SetVelocity( target:GetVelocity() + Vector( 300, 300, 300 ) )
 		else
-			printNoFindPlayer( target, ply )
+			printNoFindPlayer( target, args[1] )
 		end
 	else
 		ply:ChatPrint( "You must be an admin to do that!" )
@@ -123,7 +123,7 @@ concommand.Add( "ball_player", function( ply, cmd, args )
 		if IsValid( target ) then
 			target:SetAllowFullRotation( not target:GetAllowFullRotation() )
 		else
-			printNoFindPlayer( target, ply )
+			printNoFindPlayer( target, args[1] )
 		end
 	else
 		ply:ChatPrint( "You must be an admin to do that!" )
