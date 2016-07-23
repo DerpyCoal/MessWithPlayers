@@ -19,9 +19,9 @@ minArgs: integer with the minimum number of arguments required for the function 
 
 -- This function takes a player's name as an input, returning the player data if found.
 -- FindPlayer(string), returns Player
-local function FindPlayer( ply )
-	for k,v in pairs( player.GetAll() ) do
-		if string.find( v:Name():lower(), ply:lower() ) then
+local function FindPlayer(ply)
+	for k, v in pairs(player.GetAll()) do
+		if string.find(v:Name():lower(), ply:lower()) then
 			return v
 		end
 	end
@@ -29,7 +29,7 @@ end
 
 -- This function takes the name and data for a command, and creates it.
 -- AddCommand(string, table), returns Nil
-local function AddCommand( name, data )
+local function AddCommand(name, data)
 	-- Start by checking the validity of the data passed to the function.
 	-- Assert in Lua, is the same as "if not argument[1] then error(argument[2]) end"
 	-- So in this case, if not name then error("Name not passed...") end
@@ -94,26 +94,26 @@ end
 
 commands.launchplayer = {}
 commands.launchplayer.callback = function(ply, cmd, args)
-	local target = FindPlayer( args[1] )
-	if IsValid( target ) then
-		target:SetVelocity( target:GetVelocity() + Vector( 0, 0, 300 ) )
+	local target = FindPlayer(args[1])
+	if IsValid(target) then
+		target:SetVelocity(target:GetVelocity() + Vector( 0, 0, 300 ))
 	else
-		ply:ChatPrint( "Couldn't find a player by that name." )
+		ply:ChatPrint("Couldn't find a player by that name.")
 	end
 end
 
 commands.explodeplayer = {}
 commands.explodeplayer.callback = function(ply, cmd, args)
-	local target = FindPlayer( args[1] )
-	if IsValid( target ) then
+	local target = FindPlayer(args[1])
+	if IsValid(target) then
 		local explosiontoplayer = ents.Create("env_explosion")
-		if not ( IsValid( explosiontoplayer ) ) then return end
-		explosiontoplayer:SetPos( target:GetPos() )
-		explosiontoplayer:SetKeyValue( "Magnitude", "300" )
+		if not (IsValid(explosiontoplayer)) then return end
+		explosiontoplayer:SetPos(target:GetPos())
+		explosiontoplayer:SetKeyValue("Magnitude", "300")
 		explosiontoplayer:Spawn()
-		explosiontoplayer:Fire( "explode" )
+		explosiontoplayer:Fire("explode")
 	else
-		ply:ChatPrint( "Couldn't find a player by that name." )
+		ply:ChatPrint("Couldn't find a player by that name.")
 	end
 end
 	
@@ -144,20 +144,20 @@ end
 commands.spinplayer = {}
 commands.spinplayer.callback = function(ply, cmd, args)
 	local target = FindPlayer(args[1])
-	if IsValid( target ) then
-		target:SetVelocity( target:GetVelocity() + Vector( 0, 300, 2 ) )
+	if IsValid(target) then
+		target:SetVelocity(target:GetVelocity() + Vector( 0, 300, 2 ))
 	else
-		ply:ChatPrint( "Couldn't find a player with that name." )
+		ply:ChatPrint("Couldn't find a player with that name.")
 	end
 end
 
 commands.freezeplayer = {}
 commands.freezeplayer.callback = function(ply, cmd, args)
-	local target = FindPlayer( args[1] )
-	if IsValid( target ) then
-		target:Freeze( not target:IsFrozen() )
+	local target = FindPlayer(args[1])
+	if IsValid(target) then
+		target:Freeze(not target:IsFrozen())
 	else
-		ply:ChatPrint( "Couldn't find a player by that name." )
+		ply:ChatPrint("Couldn't find a player by that name.")
 	end
 end
 
