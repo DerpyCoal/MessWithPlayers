@@ -1,7 +1,7 @@
 --[[
 The Official MessWithPlayers script by Lavacoal123
 Initially unfucked by meharryp.
-Modulised (?) by Dr Internet.
+Modulised by Dr Internet.
 Deviations of this script must be posted on GitHub (http://www.github.com)
 Copyright - Creative Commons Attribution Non-Commercial License
 ]]--
